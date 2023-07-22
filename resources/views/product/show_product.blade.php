@@ -16,6 +16,12 @@
 
     <p>{{ $product->price }}</p>
     <p>{{ $product->stock }}</p>
+    <form action="{{ route('add_to_cart', $product) }}" method="post">
+        @csrf
+        <p>Buy:</p>
+        <input type="number" name="amount">
+        <button type="submit">Submit</button>
+    </form>
     <a href="{{ route('index.product') }}">Back</a>
 </body>
 

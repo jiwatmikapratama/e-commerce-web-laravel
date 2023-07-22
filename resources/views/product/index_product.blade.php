@@ -10,6 +10,7 @@
 
 <body>
     <a href="{{ route('create.product') }}">Add Data</a>
+    <a href="{{ route('create.product') }}">Show Cart</a>
     <table border="1">
         <tr>
             <th>No</th>
