@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -65,5 +71,13 @@ class CartController extends Controller
         ]);
 
         return redirect()->route('index.product');
+    }
+
+    public function show_cart()
+    {
+        $user_id = Auth::id();
+
+        $carts = Cart::where('user_id', $user_id)->get();
+        return view('cart.show_cart', compact('carts'));
     }
 }

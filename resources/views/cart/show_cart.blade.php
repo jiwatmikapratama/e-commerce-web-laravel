@@ -5,53 +5,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index Product</title>
+    <title>Cart {{ Auth::user()->name }}</title>
 </head>
 
 <body>
-    <a href="{{ route('create.product') }}">Add Data</a>
-    <a href="{{ route('show.cart') }}">Show Cart</a>
     <table border="1">
         <tr>
             <th>No</th>
             <th>Name</th>
-            <th>Description</th>
             <th>Image</th>
+            <th>Amount</th>
             <th>Price</th>
-            <th>Stock</th>
             <th>Actions</th>
         </tr>
-        @forelse ($products as $product)
+        @forelse ($carts as $cart)
             <tr>
                 <td>{{ $loop->iteration }}</td>
+                <td>{{ $cart->product->name }}</td>
                 <td>
-                    <form action="{{ route('show.product', $product) }}" method="get">
-                        @csrf
-                        <button type="submit">{{ $product->name }}</button>
-                    </form>
-
-
-                <td>{{ $product->description }}</td>
-                <td>
-                    <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}"
+                    <img src="{{ asset('storage/products/' . $cart->product->image) }}" alt="{{ $cart->product->name }}"
                         width="200">
                 </td>
-                <td>{{ $product->price }}</td>
-                <td>{{ $product->stock }}</td>
+
+
+                <td>{{ $cart->amount }}</td>
+                <td>{{ $cart->product->price }}</td>
+                <td>{{ $cart->product->stock }}</td>
                 <td>
-                    <a href="{{ route('edit.product', $product) }}">Update</a>
+                    {{-- <a href="{{ route('edit.product', $product) }}">Update</a>
                     <form action="{{ route('delete.product', $product) }}" method="post">
                         @method('delete')
                         @csrf
 
                         <button type="submit">Delete</button>
-                    </form>
+                    </form> --}}
                 </td>
             </tr>
         @empty
             <td>No Data Yet</td>
         @endforelse
-
+        <a href="{{ route('index.product') }}">Back</a>
     </table>
 </body>
 
