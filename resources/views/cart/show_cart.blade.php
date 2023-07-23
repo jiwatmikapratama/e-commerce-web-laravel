@@ -43,7 +43,7 @@
 
                 <td>{{ $cart->product->price }}</td>
                 <td>
-                    <form action="{{ route('delete.cart') }}" method="post">
+                    <form action="{{ route('delete.cart', $cart) }}" method="post">
                         @method('delete')
                         @csrf
                         <button type="submit">Delete</button>
