@@ -16,7 +16,6 @@
             <th>Image</th>
             <th>Amount</th>
             <th>Price</th>
-            <th>Actions</th>
         </tr>
         @forelse ($carts as $cart)
             <tr>
@@ -28,18 +27,21 @@
                 </td>
 
 
-                <td>{{ $cart->amount }}</td>
-                <td>{{ $cart->product->price }}</td>
-                <td>{{ $cart->product->stock }}</td>
                 <td>
-                    {{-- <a href="{{ route('edit.product', $product) }}">Update</a>
-                    <form action="{{ route('delete.product', $product) }}" method="post">
-                        @method('delete')
+                    <form action="{{ route('update.cart', $cart) }}" method="post">
+                        @method('patch')
                         @csrf
+                        <input type="number" name="amount" value="{{ $cart->amount }}"
+                            class="@error('amount') is-invalid @enderror">
+                        <button type="submit">Update Data</button><br>
+                        @error('amount')
+                            <span>{{ $errors->first('amount') }}</span>
+                        @enderror
 
-                        <button type="submit">Delete</button>
-                    </form> --}}
+                    </form>
                 </td>
+
+                <td>{{ $cart->product->price }}</td>
             </tr>
         @empty
             <td>No Data Yet</td>
