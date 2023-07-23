@@ -92,4 +92,10 @@ class CartController extends Controller
         ]);
         return redirect()->back();
     }
+
+    public function destroy_cart(Cart $cart)
+    {
+        $cart->delete();
+        return redirect()->back();
+    }
 }

@@ -16,6 +16,7 @@
             <th>Image</th>
             <th>Amount</th>
             <th>Price</th>
+            <th>Action</th>
         </tr>
         @forelse ($carts as $cart)
             <tr>
@@ -37,11 +38,17 @@
                         @error('amount')
                             <span>{{ $errors->first('amount') }}</span>
                         @enderror
-
                     </form>
                 </td>
 
                 <td>{{ $cart->product->price }}</td>
+                <td>
+                    <form action="{{ route('delete.cart') }}" method="post">
+                        @method('delete')
+                        @csrf
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
             </tr>
         @empty
             <td>No Data Yet</td>
