@@ -14,13 +14,13 @@ class Product extends Model
     ];
 
     /**
-     * The orders that belong to the Product
+     * The transactions that belong to the Product
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function orders()
+    public function transactions()
     {
-        return $this->belongsToMany(Order::class,);
+        return $this->belongsTo(Transaction::class,);
     }
 
     /**

@@ -53,6 +53,11 @@
         @empty
             <td>No Data Yet</td>
         @endforelse
+
+        <form action="{{ route('checkout') }}" method="post">
+            @csrf
+            <button type="submit">Checout</button>
+        </form>
         <a href="{{ route('index.product') }}">Back</a>
     </table>
 </body>

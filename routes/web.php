@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -38,3 +39,7 @@ Route::post('/cart/{product}', [CartController::class, 'add_to_cart'])->name('ad
 Route::get('/cart', [CartController::class, 'show_cart'])->name('show.cart');
 Route::patch('/cart/update/{cart}', [CartController::class, 'update_cart'])->name('update.cart');
 Route::delete('/cart/delete/{cart}', [CartController::class, 'destroy_cart'])->name('delete.cart');
+
+
+// Order Controller
+Route::post('/checout', [OrderController::class, 'checkout'])->name('checkout');

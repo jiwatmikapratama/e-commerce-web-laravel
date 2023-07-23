@@ -24,12 +24,12 @@ class Order extends Model
     }
 
     /**
-     * The products the Order
+     * The transactions the Order
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function products()
+    public function transactions()
     {
-        return $this->belongsToMany(Product::class,);
+        return $this->belongsTo(Transaction::class,);
     }
 }
