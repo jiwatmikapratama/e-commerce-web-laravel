@@ -11,6 +11,8 @@
 <body>
     <a href="{{ route('create.product') }}">Add Data</a>
     <a href="{{ route('show.cart') }}">Show Cart</a>
+    <a href="{{ route('index.order') }}">Checkout Orders</a>
+    <a href="{{ route('show.order', $order) }}">Checkout Orders</a>
     <table border="1">
         <tr>
             <th>No</th>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +20,9 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('name')->get();
         // dd($products);
-        return view('product.index_product', compact('products'));
+        $order = Auth::id();
+        // dd($order);
+        return view('product.index_product', compact('products', 'order'));
     }
 
     /**

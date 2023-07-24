@@ -29,7 +29,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/product', [ProductController::class, 'index'])->name('index.product');
 Route::get('/product/create', [ProductController::class, 'create'])->name('create.product');
 Route::post('/product/create', [ProductController::class, 'store'])->name('store.product');
-Route::get('/product/show/{product}', [ProductController::class, 'show'])->name('show.product');
+Route::get('/product/{product}', [ProductController::class, 'show'])->name('show.product');
 Route::get('/product/edit/{product}', [ProductController::class, 'edit'])->name('edit.product');
 Route::patch('/product/edit/{product}', [ProductController::class, 'update'])->name('update.product');
 Route::delete('/product/delete/{product}', [ProductController::class, 'destroy'])->name('delete.product');
@@ -42,4 +42,6 @@ Route::delete('/cart/delete/{cart}', [CartController::class, 'destroy_cart'])->n
 
 
 // Order Controller
-Route::post('/checout', [OrderController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::get('/order', [OrderController::class, 'index'])->name('index.order');
+Route::get('/order/{order}', [OrderController::class, 'show_order'])->name('show.order');
