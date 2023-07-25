@@ -6,8 +6,11 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
@@ -21,9 +24,18 @@ class OrderController extends Controller
     }
 
 
+    // public function show_order(Order $order)
+    // {
+    //     // $id = Auth::id();
+    //     // $oderUser = Order::where('user_id', $id)->get();
+    //     $orders = Order::where('user_id', '=', Auth::id())->get();
+    //     // dd(Auth::id());
+    //     // dd($orders);
+    //     return view('order.show_order', compact('orders', 'order'));
+    // }
+
     public function show_order(Order $order)
     {
-        // dd($order);
         return view('order.show_order', compact('order'));
     }
 
@@ -100,6 +112,23 @@ class OrderController extends Controller
             ]);
             $cart->delete();
         }
+
+        return redirect()->back();
+    }
+
+    public function submit_payment_receipt(Order $order, Request $request)
+    {
+        // $request->validate([
+        //     'payment_receipt' => 'max:'
+        // ]);
+        $file = $request->file('payment_receipt');
+        // $path = time() . '_' . $order->id . '.' . $file->getClientOriginalExtension();
+        $path = time() . '_' . $order->id . '.' . $file->getClientOriginalExtension();
+        // dd($file->getClientOriginalExtension());
+        Storage::disk('local')->put('public/payment_receipts/' . $path, file_get_contents($file));
+        $order->update([
+            'payment_receipt' => $path,
+        ]);
 
         return redirect()->back();
     }

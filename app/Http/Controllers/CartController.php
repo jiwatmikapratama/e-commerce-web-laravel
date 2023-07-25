@@ -92,6 +92,7 @@ class CartController extends Controller
         $user_id = Auth::id();
 
         $carts = Cart::where('user_id', $user_id)->get();
+        // dd($carts);
         return view('cart.show_cart', compact('carts'));
     }
 

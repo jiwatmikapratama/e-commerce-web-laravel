@@ -20,9 +20,7 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('name')->get();
         // dd($products);
-        $order = Auth::id();
-        // dd($order);
-        return view('product.index_product', compact('products', 'order'));
+        return view('product.index_product', compact('products',));
     }
 
     /**

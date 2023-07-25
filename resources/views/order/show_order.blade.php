@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <p>{{ $order->id }} </p>
     <p>{{ $order->user->name }} </p>
     <table border="1">
         <tr>
@@ -33,6 +34,13 @@
         @empty
             <td>No Data Yet</td>
         @endforelse
+        @if ($order->is_paid == false && $order->payment_receipt == null)
+            <form action="{{ route('submit_payment_receipt', $order) }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="payment_receipt">
+                <button type="submit">Submit</button>
+            </form>
+        @endif
         <a href="{{ route('index.product') }}">Back</a>
     </table>
 </body>

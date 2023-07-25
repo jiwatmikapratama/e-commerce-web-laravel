@@ -18,6 +18,7 @@
             <th>Price</th>
             <th>Action</th>
         </tr>
+        <p>{{ $carts }}</p>
         @forelse ($carts as $cart)
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -54,10 +55,19 @@
             <td>No Data Yet</td>
         @endforelse
 
+
+
         <form action="{{ route('checkout') }}" method="post">
             @csrf
-            <button type="submit">Checout</button>
+            @if (empty($carts))
+                <p>No Data</p>
+            @else
+                <p>Data </p>
+                <button type="submit">Checkout</button>
+            @endif
         </form>
+
+
         <a href="{{ route('index.product') }}">Back</a>
     </table>
 </body>
