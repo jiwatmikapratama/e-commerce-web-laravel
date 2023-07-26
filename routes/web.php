@@ -46,3 +46,4 @@ Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout')
 Route::get('/order', [OrderController::class, 'index'])->name('index.order');
 Route::get('/order/{order}', [OrderController::class, 'show_order'])->name('show.order');
 Route::post('/order/{order}/pay', [OrderController::class, 'submit_payment_receipt'])->name('submit_payment_receipt');
+Route::post('/order/{order}/confirm', [OrderController::class, 'confirm_payment'])->name('confirm.payment');

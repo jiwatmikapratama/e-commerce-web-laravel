@@ -14,13 +14,30 @@
             <th>No</th>
             <th>User</th>
             <th>Order Time</th>
+            <th>Payment Receipt</th>
+            <th>Action</th>
         </tr>
         @forelse ($orders as $order)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $order->user->name }} </td>
-
                 <td>{{ $order->created_at }}</td>
+                <td>
+                    <a target="__blank"
+                        href="{{ url('storage/payment_receipts/' . $order->payment_receipt) }}">{{ $order->payment_receipt }}</a>
+                </td>
+                <td>
+                    @if ($order->payment_receipt != null)
+                        @if ($order->is_paid == false)
+                            <form action="{{ route('confirm.payment', $order) }}" method="post">
+                                @csrf
+                            </form>
+                        @else
+                            <button type="disabled">Confirmed</button>
+                        @endif
+                    @endif
+
+                </td>
 
             </tr>
         @empty
