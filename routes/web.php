@@ -3,8 +3,10 @@
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Profiler\Profile;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,3 +49,7 @@ Route::get('/order', [OrderController::class, 'index'])->name('index.order');
 Route::get('/order/{order}', [OrderController::class, 'show_order'])->name('show.order');
 Route::post('/order/{order}/pay', [OrderController::class, 'submit_payment_receipt'])->name('submit_payment_receipt');
 Route::post('/order/{order}/confirm', [OrderController::class, 'confirm_payment'])->name('confirm.payment');
+
+//Use Controller
+Route::get('users/profile', [ProfileController::class, 'show'])->name('show.user');
+Route::post('users/profile', [ProfileController::class, 'update'])->name('update.user');
