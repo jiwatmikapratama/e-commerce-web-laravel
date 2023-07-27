@@ -16,9 +16,13 @@
             <th>No</th>
             <th>Product Image</th>
             <th>Product Name</th>
+            <th>Product Price</th>
             <th>Product Amount</th>
             <th>Transaction Time</th>
         </tr>
+        @php
+            $total_price = 0;
+        @endphp
         @forelse ($order->transactions as $transaction)
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -27,13 +31,17 @@
                         style="width: 200px">
                 </td>
                 <td>{{ $transaction->product->name }}</td>
+                <td>{{ $transaction->product->price }}</td>
                 <td>{{ $transaction->amount }}</td>
                 <td>{{ $transaction->created_at }}</td>
-
             </tr>
+            @php
+                $total_price += $transaction->amount * $transaction->product->price;
+            @endphp
         @empty
             <td>No Data Yet</td>
         @endforelse
+
         @if ($order->is_paid == false && $order->payment_receipt == null)
             <form action="{{ route('submit_payment_receipt', $order) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -43,6 +51,7 @@
         @endif
         <a href="{{ route('index.product') }}">Back</a>
     </table>
+    <td>{{ $total_price }}</td>
 </body>
 
 </html>

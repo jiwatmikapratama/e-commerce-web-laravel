@@ -14,6 +14,7 @@
             <th>No</th>
             <th>User</th>
             <th>Order Time</th>
+            <th>Check Order List</th>
             <th>Payment Receipt</th>
             <th>Action</th>
         </tr>
@@ -22,20 +23,20 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $order->user->name }} </td>
                 <td>{{ $order->created_at }}</td>
+                <td><a href="{{ route('show.order', $order) }}">Check</a></td>
                 <td>
                     <a target="__blank"
                         href="{{ url('storage/payment_receipts/' . $order->payment_receipt) }}">{{ $order->payment_receipt }}</a>
                 </td>
                 <td>
-                    @if ($order->payment_receipt != null)
-                        @if ($order->is_paid == false)
-                            <form action="{{ route('confirm.payment', $order) }}" method="post">
-                                @csrf
-                            </form>
+                    <form action="{{ route('confirm.payment', $order) }}" method="post">
+                        @csrf
+                        @if ($order->payment_receipt != null && $order->is_paid == false)
+                            <button type="submit">Confirm</button>
                         @else
                             <button type="disabled">Confirmed</button>
                         @endif
-                    @endif
+                    </form>
 
                 </td>
 

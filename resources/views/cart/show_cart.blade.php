@@ -18,6 +18,9 @@
             <th>Price</th>
             <th>Action</th>
         </tr>
+        @php
+            $total_price = 0;
+        @endphp
         <p>{{ $carts }}</p>
         @forelse ($carts as $cart)
             <tr>
@@ -27,8 +30,6 @@
                     <img src="{{ asset('storage/products/' . $cart->product->image) }}" alt="{{ $cart->product->name }}"
                         width="200">
                 </td>
-
-
                 <td>
                     <form action="{{ route('update.cart', $cart) }}" method="post">
                         @method('patch')
@@ -51,25 +52,25 @@
                     </form>
                 </td>
             </tr>
+            @php
+                $total_price += $cart->product->price * $cart->amount;
+            @endphp
         @empty
             <td>No Data Yet</td>
         @endforelse
 
 
 
-        <form action="{{ route('checkout') }}" method="post">
-            @csrf
-            @if (empty($carts))
-                <p>No Data</p>
-            @else
-                <p>Data </p>
-                <button type="submit">Checkout</button>
-            @endif
-        </form>
-
-
         <a href="{{ route('index.product') }}">Back</a>
     </table>
+    @if ($carts != null)
+        <form action="{{ route('checkout') }}" method="post">
+            @csrf
+            <button type="submit">Checkout</button>
+        </form>
+    @endif
+
+    <p>Total Price Rp. {{ $total_price }}</p>
 </body>
 
 </html>
