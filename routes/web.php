@@ -18,28 +18,28 @@ use Symfony\Component\HttpKernel\Profiler\Profile;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/', [ProductController::class, 'index'])->name('index.product');
 // Product Controller
 Route::get('/product', [ProductController::class, 'index'])->name('index.product');
 
 Route::middleware(['is_admin'])->group(function () {
-    Route::get('/product/create', [ProductController::class, 'create'])->name('create.product');
-    Route::post('/product/create', [ProductController::class, 'store'])->name('store.product');
-    Route::get('/product/edit/{product}', [ProductController::class, 'edit'])->name('edit.product');
     Route::patch('/product/edit/{product}', [ProductController::class, 'update'])->name('update.product');
     Route::post('/order/{order}/confirm', [OrderController::class, 'confirm_payment'])->name('confirm.payment');
     Route::delete('/product/delete/{product}', [ProductController::class, 'destroy'])->name('delete.product');
+    Route::get('/product/edit/{product}', [ProductController::class, 'edit'])->name('edit.product');
+    Route::get('/product/create', [ProductController::class, 'create'])->name('create.product');
+    Route::post('/product/create', [ProductController::class, 'store'])->name('store.product');
 });
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/product/{product}', [ProductController::class, 'show'])->name('show.product');
-
 
     // Cart Controller
     Route::post('/cart/{product}', [CartController::class, 'add_to_cart'])->name('add_to_cart');
     Route::get('/cart', [CartController::class, 'show_cart'])->name('show.cart');
     Route::patch('/cart/update/{cart}', [CartController::class, 'update_cart'])->name('update.cart');
     Route::delete('/cart/delete/{cart}', [CartController::class, 'destroy_cart'])->name('delete.cart');
-
 
 
     // Order Controller
@@ -53,9 +53,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('users/profile', [ProfileController::class, 'update'])->name('update.user');
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 

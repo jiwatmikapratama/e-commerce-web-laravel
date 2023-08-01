@@ -16,7 +16,7 @@ class Is_Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() || Auth::user()->is_admin == false) {
+        if (Auth::check() && Auth::user()->is_admin == false || !Auth::check()) {
             return redirect()->route('index.product');
         }
         return $next($request);

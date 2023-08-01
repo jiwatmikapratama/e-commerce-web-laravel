@@ -6,6 +6,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class CartController extends Controller
 {
@@ -93,6 +94,9 @@ class CartController extends Controller
 
         $carts = Cart::where('user_id', $user_id)->get();
         // dd($carts);
+        $title = 'Delete Product From Cart!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
         return view('cart.show_cart', compact('carts'));
     }
 
@@ -105,12 +109,13 @@ class CartController extends Controller
         $cart->update([
             'amount' => $request->amount,
         ]);
-        return redirect()->back();
+        return redirect()->back()->with('toast_success', 'Cart Updated Successfully!');
     }
 
     public function destroy_cart(Cart $cart)
     {
+        Alert::question('Congrats', 'You\'ve Successfully Registered');
         $cart->delete();
-        return redirect()->back();
+        return redirect()->back()->with('toast_success', 'Product Deleted From Cart!');
     }
 }

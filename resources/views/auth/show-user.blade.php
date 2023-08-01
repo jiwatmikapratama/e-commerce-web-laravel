@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.app', ['title' => $user->name . ' Profile'])
 
 @section('content')
     <div class="container">

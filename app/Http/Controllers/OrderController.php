@@ -113,7 +113,7 @@ class OrderController extends Controller
             $cart->delete();
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('toast_success', 'Checkout Successfully!');
     }
 
     public function submit_payment_receipt(Order $order, Request $request)

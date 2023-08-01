@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
 {
@@ -20,6 +20,10 @@ class ProductController extends Controller
     {
         $products = Product::orderBy('name')->get();
         // dd($products);
+        $title = 'Delete Product!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+
         return view('product.index_product', compact('products',));
     }
 
@@ -57,7 +61,7 @@ class ProductController extends Controller
             'image' => $path,
         ]);
 
-        return redirect()->route('create.product');
+        return redirect()->route('index.product')->with('toast_success', 'Product Create Successfully!');;
     }
 
     /**
@@ -122,7 +126,7 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        Storage::delete('public/products/' . $product->path);
-        return redirect()->route('index.product');
+        Storage::delete('public/products/' . $product->image);
+        return redirect()->back();
     }
 }
