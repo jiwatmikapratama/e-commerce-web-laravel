@@ -1,30 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.app', ['title' => 'Order '. ''])
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Order {{ $order->user->name }}</title>
-</head>
-
-<body>
-    <p>{{ $order->id }} </p>
-    <p>{{ $order->user->name }} </p>
-    <table border="1">
-        <tr>
+@section('content')
+    <table class="table table-striped table-bordered">
+        <thead>
             <th>No</th>
             <th>Product Image</th>
             <th>Product Name</th>
             <th>Product Price</th>
             <th>Product Amount</th>
             <th>Transaction Time</th>
-        </tr>
+        </thead>
         @php
             $total_price = 0;
         @endphp
         @forelse ($order->transactions as $transaction)
-            <tr>
+            <tbody>
                 <td>{{ $loop->iteration }}</td>
                 <td>
                     <img src="{{ asset('storage/products/' . $transaction->product->image) }}  " alt=""
@@ -34,12 +24,12 @@
                 <td>{{ $transaction->product->price }}</td>
                 <td>{{ $transaction->amount }}</td>
                 <td>{{ $transaction->created_at }}</td>
-            </tr>
+            </tbody>
             @php
                 $total_price += $transaction->amount * $transaction->product->price;
             @endphp
         @empty
-            <td>No Data Yet</td>
+            <thead>No Data Yet</thead>
         @endforelse
 
         @if ($order->is_paid == false && $order->payment_receipt == null)
@@ -49,9 +39,15 @@
                 <button type="submit">Submit</button>
             </form>
         @endif
-        <a href="{{ route('index.product') }}">Back</a>
+        <a href="{{ route('index.order') }}">Back</a>
     </table>
-    <td>{{ $total_price }}</td>
-</body>
 
-</html>
+    <td>Total Payment: Rp. {{ $total_price }}</td><br>
+    <td>
+        @if ($order->payment_receipt != null)
+            Order been have paid <span class="badge text-bg-success">Paid</span>
+        @else
+            Order not paid yet<span class="badge text-bg-danger">Unpaid</span>
+        @endif
+    </td>
+@endsection

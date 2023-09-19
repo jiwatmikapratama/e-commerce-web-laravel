@@ -19,8 +19,18 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return view('order.index_order', compact('orders'));
+        $user_id = Auth::id();
+        $user_name = Auth::user();
+        $title = 'Delete Order!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+        if ($user_name->is_admin == true) {
+            $orders = Order::all();
+        } else {
+            $orders = Order::where('user_id', $user_id)->get();
+        }
+
+        return view('order.index_order', compact('orders', 'user_name'));
     }
 
 
@@ -82,9 +92,15 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Order $order)
     {
-        //
+        $transactions = $order->user_id;
+        // dd($order->id);
+
+        // $transactions = Transaction::where('order_id', $order->user_id);
+        dd($transactions);
+        $order->delete();
+        return redirect()->back()->with('toast_success', 'Product Deleted From Order!');
     }
 
     public function checkout()
@@ -118,9 +134,6 @@ class OrderController extends Controller
 
     public function submit_payment_receipt(Order $order, Request $request)
     {
-        // $request->validate([
-        //     'payment_receipt' => 'max:'
-        // ]);
         $file = $request->file('payment_receipt');
         // $path = time() . '_' . $order->id . '.' . $file->getClientOriginalExtension();
         $path = time() . '_' . $order->id . '.' . $file->getClientOriginalExtension();
@@ -138,6 +151,6 @@ class OrderController extends Controller
         $order->update([
             'is_paid' => true
         ]);
-        return redirect()->back();
+        return redirect()->route('index.order');
     }
 }

@@ -114,7 +114,6 @@ class CartController extends Controller
 
     public function destroy_cart(Cart $cart)
     {
-        Alert::question('Congrats', 'You\'ve Successfully Registered');
         $cart->delete();
         return redirect()->back()->with('toast_success', 'Product Deleted From Cart!');
     }

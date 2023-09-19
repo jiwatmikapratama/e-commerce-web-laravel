@@ -4,8 +4,8 @@
     <p>{{ $product->description }}</p>
     <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}" width="200">
 
-    <p>{{ $product->price }}</p>
-    <p>{{ $product->stock }}</p>
+    <p>Price: {{ $product->price }}</p>
+    <p>Avaiable Stock: {{ $product->stock }}</p>
     <form action="{{ route('add_to_cart', $product) }}" method="post">
         @csrf
         <p>Buy:</p>

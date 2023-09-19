@@ -21,71 +21,40 @@
 
 
     {{-- Product Section --}}
+    {{-- Product Card --}}
+    <div class="row rows-cols-2 row-cols-lg-4">
+        @forelse ($products as $product)
+            <div class="col-md-4 px-2 py-2">
+                <a href="{{ route('show.product', $product) }}" class="text-decoration-none text-black">
+                    <div class="card h-70" style="">
+                        <img src="{{ asset('storage/products/' . $product->image) }}" class="card-img-top"
+                            alt="{{ $product->name }}" width="100%" height="200">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $product->name }}</h5>
+                            <p class="card-text">{{ $product->description }}</p>
+                            @if (Auth::check() && Auth::user()->is_admin == true)
+                                <form action="{{ route('edit.product', $product) }}" method="get">
+                                    @csrf
+                                    <button class="btn btn-warning show_confirm">Edit</button>
+                                </form>
 
-    @forelse ($products as $product)
-        <a href="{{ route('show.product', $product) }}" class="text-decoration-none text-black">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ asset('storage/products/' . $product->image) }}" class="card-img-top"
-                    alt="{{ $product->name }}" width="200">
-                <div class="card-body">
-                    <h5 class="card-title">{{ $product->name }}</h5>
-                    <p class="card-text">{{ $product->description }}</p>
-                    @if (Auth::check() && Auth::user()->is_admin == true)
-                        <form action="{{ route('edit.product', $product) }}" method="get">
-                            @csrf
-                            <button class="btn btn-warning show_confirm">Edit</button>
-                        </form>
 
-                        <form action="{{ route('delete.product', $product) }}" method="post">
-                            @method('delete')
-                            @csrf
-                            <a href="{{ route('delete.product', $product) }}" class="btn btn-danger"
-                                data-confirm-delete="true">Delete</a>
-                        </form>
-                    @endif
-                </div>
-                <div class="card-footer">
-                    <small class="text-body-secondary">Last updated:
-                        {{ $product->updated_at->format('d M Y') }}</small>
-                    <p class="card-text">Stock Avaiable: {{ $product->stock }}</p>
-                </div>
+                                <a href="{{ route('delete.product', $product) }}" class="btn btn-danger"
+                                    data-confirm-delete="true">Delete</a>
+                            @endif
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">Last updated:
+                                {{ $product->updated_at->format('d M Y') }}</small>
+                            <p class="card-text">Stock Avaiable: {{ $product->stock }}</p>
+                        </div>
+                    </div>
+                </a>
             </div>
-        </a>
-
-
-        {{-- Product Card --}}
-
-        {{-- End Product Card --}}
-
-    @empty
-        <h1 class="text-center">No Data</h1>
-    @endforelse
-    {{-- End Product Section --}}
+        @empty
+            <h1 class="text-center">No Data</h1>
+        @endforelse
     </div>
-
-
-    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-
-    <script type="text/javascript">
-        $('.show-alert-delete-box').click(function(event) {
-            var form = $(this).closest("form");
-            var name = $(this).data("name");
-            event.preventDefault();
-            swal({
-                title: "Are you sure you want to delete this record?",
-                text: "If you delete this, it will be gone forever.",
-                icon: "warning",
-                type: "warning",
-                buttons: ["Cancel", "Yes!"],
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                }
-            });
-        });
-    </script> --}}
+    {{-- End Product Card --}}
+    {{-- End Product Section --}}
 @endsection

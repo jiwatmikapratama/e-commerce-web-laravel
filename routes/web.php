@@ -47,8 +47,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order', [OrderController::class, 'index'])->name('index.order');
     Route::get('/order/{order}', [OrderController::class, 'show_order'])->name('show.order');
     Route::post('/order/{order}/pay', [OrderController::class, 'submit_payment_receipt'])->name('submit_payment_receipt');
+    Route::delete('/order/delete/{order}', [OrderController::class, 'destroy'])->name('delete.order');
 
-    //Use Controller
+    //User Controller
     Route::get('users/profile', [ProfileController::class, 'show'])->name('show.user');
     Route::post('users/profile', [ProfileController::class, 'update'])->name('update.user');
 });

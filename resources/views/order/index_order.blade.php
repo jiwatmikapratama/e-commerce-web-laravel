@@ -1,25 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Orders</title>
-</head>
-
-<body>
-    <table border="1">
-        <tr>
-            <th>No</th>
-            <th>User</th>
-            <th>Order Time</th>
-            <th>Check Order List</th>
-            <th>Payment Receipt</th>
-            <th>Action</th>
-        </tr>
+@extends('layouts.app', ['title' => 'Order ' . $user_name->name])
+@section('content')
+    <table class="table table-striped table-bordered">
+        <thead>
+            <th scope="col">No</th>
+            <th scope="col">User</th>
+            <th scope="col">Order Time</th>
+            <th scope="col">Check Order List</th>
+            <th scope="col">Payment Receipt</th>
+            @if (Auth::user()->is_admin == true)
+                <th scope="col">Action</th>
+            @endif
+        </thead>
         @forelse ($orders as $order)
-            <tr>
+            <tbody>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $order->user->name }} </td>
                 <td>{{ $order->created_at }}</td>
@@ -28,24 +21,36 @@
                     <a target="__blank"
                         href="{{ url('storage/payment_receipts/' . $order->payment_receipt) }}">{{ $order->payment_receipt }}</a>
                 </td>
-                <td>
-                    <form action="{{ route('confirm.payment', $order) }}" method="post">
-                        @csrf
-                        @if ($order->payment_receipt != null && $order->is_paid == false)
-                            <button type="submit">Confirm</button>
-                        @else
-                            <button type="disabled">Confirmed</button>
-                        @endif
-                    </form>
+                @if (Auth::user()->is_admin == true)
+                    <td>
+                        <form action="{{ route('confirm.payment', $order) }}" method="post">
+                            @csrf
+                            @if ($order->payment_receipt == null || $order->is_paid == false)
+                                <button type="{{ $order->is_paid == false ? 'disabled' : 'submit' }}"
+                                    class="btn btn-warning">Confirm</button>
+                            @else
+                                <button type="disabled" class="btn btn-success">Confirmed</button>
+                            @endif
+                        </form>
 
-                </td>
+                        <form action="{{ route('delete.order', $order) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <a href="{{ route('delete.order', $order) }}" class="btn btn-danger"
+                                data-confirm-delete="true">Delete</a>
+                        </form>
+                    </td>
+                @endif
 
-            </tr>
+
+            </tbody>
         @empty
             <td>No Data Yet</td>
         @endforelse
         <a href="{{ route('index.product') }}">Back</a>
     </table>
+@endsection
+
 </body>
 
 </html>
