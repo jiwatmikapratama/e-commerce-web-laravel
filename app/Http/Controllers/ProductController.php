@@ -93,31 +93,46 @@ class ProductController extends Controller
             if (Storage::exists($path)) {
                 Storage::delete($path);
             }
+            $request->validate([
+                'name' => 'required',
+                'price' => 'required',
+                'stock' => 'required',
+                'description' => 'required',
+
+            ]);
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
+                Storage::disk('local')->put('public/products/' . $path, file_get_contents($file));
+            }
+
+            $product->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'description' => $request->description,
+                'image' => $path,
+            ]);
+        } else {
+            $request->validate([
+                'name' => 'required',
+                'price' => 'required',
+                'stock' => 'required',
+                'description' => 'required',
+            ]);
+
+            $product->update([
+                'name' => $request->name,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'description' => $request->description,
+            ]);
         }
 
 
-        $request->validate([
-            'name' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'description' => 'required',
 
-        ]);
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $path = time() . '_' . $request->name . '.' . $file->getClientOriginalExtension();
-            Storage::disk('local')->put('public/products/' . $path, file_get_contents($file));
-        }
 
-        $product->update([
-            'name' => $request->name,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'description' => $request->description,
-            'image' => $path,
-        ]);
-
-        return redirect()->route('edit.product', compact('product'));
+        return redirect()->route('index.product', compact('product'));
     }
 
     /**

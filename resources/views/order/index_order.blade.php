@@ -1,6 +1,6 @@
 @extends('layouts.app', ['title' => 'Order ' . $user_name->name])
 @section('content')
-    <table class="table table-striped table-bordered">
+    <table class="table table-striped table-bordered ui celled table" id="myTable" style="width:100%">
         <thead>
             <th scope="col">No</th>
             <th scope="col">User</th>
@@ -18,6 +18,9 @@
                 <td>{{ $order->created_at }}</td>
                 <td><a href="{{ route('show.order', $order) }}">Check</a></td>
                 <td>
+                    @if (!$order->payment_receipt)
+                        <p>Not paid yet</p>
+                    @endif
                     <a target="__blank"
                         href="{{ url('storage/payment_receipts/' . $order->payment_receipt) }}">{{ $order->payment_receipt }}</a>
                 </td>
@@ -27,7 +30,7 @@
                             @csrf
                             @if ($order->payment_receipt == null || $order->is_paid == false)
                                 <button type="{{ $order->is_paid == false ? 'disabled' : 'submit' }}"
-                                    class="btn btn-warning">Confirm</button>
+                                    class="btn btn-warning {{ !$order->payment_receipt ? 'disabled' : '' }}">Confirm</button>
                             @else
                                 <button type="disabled" class="btn btn-success">Confirmed</button>
                             @endif
@@ -47,7 +50,6 @@
         @empty
             <td>No Data Yet</td>
         @endforelse
-        <a href="{{ route('index.product') }}">Back</a>
     </table>
 @endsection
 

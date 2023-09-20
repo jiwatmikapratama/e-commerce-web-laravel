@@ -10,7 +10,7 @@
             @else
                 <form action="{{ route('checkout') }}" method="post">
                     @csrf
-                    <button type="submit">Checkout</button>
+                    <button type="submit" class="btn btn-success">Checkout</button>
                 </form>
             @endif
 

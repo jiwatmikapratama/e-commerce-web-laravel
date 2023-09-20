@@ -9,11 +9,6 @@
                 <form action="{{ route('update.product', $product) }}" method="post" enctype="multipart/form-data">
                     @method('patch')
                     @csrf
-                    {{-- <input type="text" name="name" placeholder="name" value="{{ $product->name }}"><br>
-                <input type="text" name="description" placeholder="description" value="{{ $product->description }}"><br>
-                <input type="number" name="price" placeholder="price" value="{{ $product->price }}"><br>
-                <input type="number" name="stock" placeholder="stock" value="{{ $product->stock }}"><br>
-                <input type="file" name="image"><br>  --}}
 
                     {{-- Form Field Name --}}
                     <div class="mb-3">

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => 'Order '. ''])
+@extends('layouts.app', ['title' => 'Order ' . ''])
 
 @section('content')
     <table class="table table-striped table-bordered">
@@ -32,14 +32,23 @@
             <thead>No Data Yet</thead>
         @endforelse
 
+        {{-- @if ($order->user_id === Auth::id()) --}}
         @if ($order->is_paid == false && $order->payment_receipt == null)
             <form action="{{ route('submit_payment_receipt', $order) }}" method="post" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="payment_receipt">
-                <button type="submit">Submit</button>
+                <div class="row pb-3">
+                    <div class="col-md-8">
+                        <input type="file" name="payment_receipt" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ route('index.order') }}" class="btn btn-danger">Back</a>
+                    </div>
+                </div>
             </form>
+            {{-- @endif --}}
         @endif
-        <a href="{{ route('index.order') }}">Back</a>
+
     </table>
 
     <td>Total Payment: Rp. {{ $total_price }}</td><br>
