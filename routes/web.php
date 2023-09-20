@@ -43,6 +43,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     // Order Controller
+    Route::get('/test', [OrderController::class, 'test']);
     Route::post('/checkout', [OrderController::class, 'checkout'])->name('checkout');
     Route::get('/order', [OrderController::class, 'index'])->name('index.order');
     Route::get('/order/{order}', [OrderController::class, 'show_order'])->name('show.order');

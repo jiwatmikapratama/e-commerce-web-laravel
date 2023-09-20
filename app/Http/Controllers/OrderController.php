@@ -46,6 +46,7 @@ class OrderController extends Controller
 
     public function show_order(Order $order)
     {
+
         return view('order.show_order', compact('order'));
     }
 
@@ -89,18 +90,37 @@ class OrderController extends Controller
         //
     }
 
+    public function test()
+    {
+        $product_id = 31;
+        $order = 12;
+        $transactions = Transaction::where('order_id', $order)->get();
+        $products = Product::find($transactions);
+        // dd($products);
+        // dd($transactions->product_id);
+        return view('test.index', compact('transactions', 'products'));
+    }
+
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Order $order)
     {
-        $transactions = $order->user_id;
-        // dd($order->id);
-
-        // $transactions = Transaction::where('order_id', $order->user_id);
-        dd($transactions);
+        $transactions = Transaction::all();
+        $product =  Product::find($transactions);
+        // dd($transactions);
+        // dd($product);
+        foreach ($product as $product) {
+            $curent_trasaction = $transactions->where('product_id', $product->id)->first();
+            // dd($curent_trasaction);
+            if ($curent_trasaction) {
+                $product->stock += $curent_trasaction->amount;
+                $product->save();
+            }
+        }
         $order->delete();
-        return redirect()->back()->with('toast_success', 'Product Deleted From Order!');
+        Storage::delete('public/payment_receipts/' . $order->payment_receipt);
+        return redirect()->back()->with('toast_success', 'Order Deleted From Order!');
     }
 
     public function checkout()
